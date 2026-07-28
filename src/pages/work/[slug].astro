@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('case-studies');
+  return caseStudies.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'case-studies'>;
+}
+const { entry } = Astro.props;
+const { title, industry, outcome, stack, client } = entry.data;
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={`${title} — Enoch Okumagbe`} description={entry.data.problem}>
+  <div class="case-detail">
+    <a href="/work" class="back-link reveal">All case studies</a>
+    <div class="eyebrow case-detail-eyebrow reveal">{industry}</div>
+    <h1 class="case-detail-title reveal">{title}</h1>
+    <div class="case-detail-outcome reveal">{outcome}</div>
+
+    <div class="case-detail-body reveal">
+      {client && <div class="case-detail-client">Client: {client}</div>}
+      <Content />
+    </div>
+
+    <div class="case-detail-meta reveal">
+      {stack.map((tag: string) => <span class="stack-tag">{tag}</span>)}
+    </div>
+
+    <a href="/#contact" class="btn-solid reveal">Discuss a similar project →</a>
+  </div>
+</BaseLayout>

@@ -1,0 +1,21 @@
+---
+// On the homepage, section links stay as plain "#services" fragments so the
+// site-wide smooth-scroll JS handles them in-page. On every other page
+// (/work, /work/[slug]) they become "/#services" — a real navigation back
+// to the homepage that lands on the right section, since there's nothing
+// to scroll to on the current page.
+const isHome = Astro.url.pathname === '/';
+const link = (section: string) => (isHome ? `#${section}` : `/#${section}`);
+---
+
+<nav>
+  <a href="/" class="nav-logo">Enoch Okumagbe</a>
+  <ul class="nav-links">
+    <li><a href={link('services')} data-section="services">Services</a></li>
+    <li><a href="/work" data-section="work">Work</a></li>
+    <li><a href={link('process')} data-section="process">Process</a></li>
+    <li><a href={link('about')} data-section="about">About</a></li>
+    <li><a href={link('contact')} data-section="contact">Contact</a></li>
+  </ul>
+  <a href="https://www.upwork.com/freelancers/~01a9a956bec4468c5d" target="_blank" class="nav-cta">Hire on Upwork</a>
+</nav>

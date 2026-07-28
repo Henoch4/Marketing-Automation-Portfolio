@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import { getCollection } from 'astro:content';
+
+const allCaseStudies = (await getCollection('case-studies')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Work — Enoch Okumagbe"
+  description={`${allCaseStudies.length} real automation systems, built for real clients. Problem, system, outcome — for each one.`}
+>
+  <div class="work-hero">
+    <a href="/" class="back-link reveal">Back home</a>
+    <div class="eyebrow reveal">Portfolio</div>
+    <h1 class="section-title reveal">
+      {allCaseStudies.length} real systems,<br /><em>real outcomes</em>
+    </h1>
+    <p class="section-desc reveal" style="margin-top:1rem">
+      Every project below was built for a paying client. Problem, system, outcome — for each one.
+    </p>
+  </div>
+
+  <section class="section" style="padding-top:2rem">
+    <div class="case-grid">
+      {allCaseStudies.map((c) => (
+        <CaseStudyCard
+          slug={c.slug}
+          title={c.data.title}
+          industry={c.data.industry}
+          problem={c.data.problem}
+          outcome={c.data.outcome}
+          stack={c.data.stack}
+          featured={c.data.featured}
+          tinted={c.data.tinted}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

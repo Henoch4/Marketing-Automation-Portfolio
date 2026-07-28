@@ -1,0 +1,16 @@
+---
+const isHome = Astro.url.pathname === '/';
+const link = (section: string) => (isHome ? `#${section}` : `/#${section}`);
+---
+
+<footer>
+  <div class="footer-logo">Enoch Okumagbe</div>
+  <ul class="footer-links">
+    <li><a href={link('services')}>Services</a></li>
+    <li><a href="/work">Work</a></li>
+    <li><a href={link('process')}>Process</a></li>
+    <li><a href="https://linkedin.com/in/enoch-okumagbe-4442b6252" target="_blank">LinkedIn</a></li>
+    <li><a href="https://www.upwork.com/freelancers/~01a9a956bec4468c5d" target="_blank">Upwork</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Enoch Okumagbe</div>
+</footer>

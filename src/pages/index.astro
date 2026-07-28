@@ -1,0 +1,225 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CaseStudyCard from '../components/CaseStudyCard.astro';
+import { getCollection } from 'astro:content';
+
+const allCaseStudies = (await getCollection('case-studies')).sort((a, b) => a.data.order - b.data.order);
+// Homepage shows only the featured subset — full list lives at /work.
+// "A homepage is a front page, not an index."
+const featuredCaseStudies = allCaseStudies.filter((c) => c.data.featured);
+
+const services = [
+  { title: 'AI Voice Agents', desc: 'Inbound call handling that qualifies prospects and books appointments automatically. Answers 24/7, zero staff required.' },
+  { title: 'B2B Outreach Automation', desc: 'Three-phase pipelines: Apollo lead generation, GPT-4 personalised sequences, smart triage with reply-triggered stop logic.' },
+  { title: 'CRM Setup & Repair', desc: 'Full audit and rebuild of broken stacks. Fixed field mapping, repaired triggers, integrated calendar and forms end-to-end.' },
+  { title: 'Lead Capture Systems', desc: 'Conversational flows that qualify intent, personalise the path, and route visitors directly to booked consultations.' },
+  { title: 'Content Automation', desc: 'Pull from a central sheet, generate platform-specific variations, route to channels, handle approvals, prevent duplicates.' },
+  { title: 'Automation Dashboards', desc: 'Reporting panels showing sync rates, pipeline health, and automation status. No digging through raw data ever again.' },
+];
+
+const processSteps = [
+  { num: '01 / AUDIT', title: 'Audit', desc: 'Map your existing stack end to end. Identify every breakpoint — where leads fall off, where manual work creeps in, where data gets lost.' },
+  { num: '02 / IDENTIFY', title: 'Identify', desc: 'Pinpoint the exact triggers, integration gaps, and logic failures causing revenue leakage. Prioritise fixes by business impact.' },
+  { num: '03 / BUILD', title: 'Build', desc: 'Construct the unified pipeline — automations, CRM flows, AI agents, and follow-up sequences working as one system. No duct tape.' },
+  { num: '04 / HAND OFF', title: 'Hand Off', desc: 'You receive it live, tested, and documented. Not a prototype you have to finish. Not a tutorial you have to follow. Running.' },
+];
+---
+
+<BaseLayout
+  title="Enoch Okumagbe — AI Marketing Automation"
+  description="Enoch Okumagbe — AI Marketing Automation Engineer. I build systems that turn leads into booked appointments without manual intervention."
+>
+  <section class="hero" id="home">
+    <div class="hero-left">
+      <div class="eyebrow hero-kicker">
+        <img src="/images/enoch-avatar.jpg" alt="Enoch Okumagbe" class="hero-avatar" width="96" height="96" />
+        AI Marketing Automation · Lagos, Nigeria
+      </div>
+      <h1 class="hero-headline">Your pipeline<br />leaks.<br /><em>I find it.<br />I fix it.</em></h1>
+      <p class="hero-sub">I build AI-powered marketing and CRM systems that qualify, nurture, and convert leads automatically — no manual intervention, no dropped calls, no missed follow-ups.</p>
+      <div class="hero-actions">
+        <a href="#work" class="btn-solid">See My Work</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-val" data-count="8" data-suffix="+">0</div><div class="stat-label">Systems Built</div></div>
+        <div><div class="stat-val" data-count="80" data-suffix="%">0</div><div class="stat-label">Less Manual Work</div></div>
+        <div><div class="stat-val" data-static="24/7">24/7</div><div class="stat-label">Automated Ops</div></div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="clay-scene" id="clayScene">
+        <canvas id="clayCanvas"></canvas>
+        <div class="hero-card hero-card-main">
+          <div class="hc-label">Pipeline Health</div>
+          <div class="hc-metric">82%</div>
+          <div class="hc-sub"><span class="hc-dot"></span>Leads converting this week</div>
+          <div class="hc-bar"><div class="hc-bar-fill"></div></div>
+        </div>
+        <div class="hero-card hero-card-sm1">
+          <div class="hc-label">Calls Booked</div>
+          <div class="hc-metric" style="font-size:1.4rem">147</div>
+          <div class="hc-sub" style="font-size:.72rem">This month, automated</div>
+        </div>
+        <div class="hero-card hero-card-sm2">
+          <div class="hc-label">Response Time</div>
+          <div class="hc-metric" style="font-size:1.4rem">&lt;2s</div>
+          <div class="hc-sub" style="font-size:.72rem">AI triage active</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="full-divider"><hr /></div>
+
+  <section class="section" id="services">
+    <div class="section-header reveal">
+      <div class="eyebrow">What I Build</div>
+      <h2 class="section-title">Systems that run<br /><em>while you sleep</em></h2>
+    </div>
+    <div class="services-grid">
+      {services.map((s) => (
+        <div class="service-card reveal">
+          <div class="sc-anim"><canvas class="sc-canvas"></canvas></div>
+          <div class="sc-title">{s.title}</div>
+          <p class="sc-desc">{s.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="full-divider"><hr /></div>
+
+  <section class="section" id="work">
+    <div class="section-header reveal">
+      <div class="eyebrow">Portfolio</div>
+      <h2 class="section-title">{allCaseStudies.length} real systems,<br /><em>real outcomes</em></h2>
+    </div>
+    <div class="case-grid">
+      {featuredCaseStudies.map((c) => (
+        <CaseStudyCard
+          slug={c.slug}
+          title={c.data.title}
+          industry={c.data.industry}
+          problem={c.data.problem}
+          outcome={c.data.outcome}
+          stack={c.data.stack}
+          featured={c.data.featured}
+          tinted={c.data.tinted}
+        />
+      ))}
+    </div>
+    <div class="reveal" style="margin-top:2rem;text-align:center">
+      <a href="/work" class="btn-outline">View All {allCaseStudies.length} Case Studies →</a>
+    </div>
+  </section>
+
+  <div class="full-divider"><hr /></div>
+
+  <section class="section" id="process">
+    <div class="section-header reveal">
+      <div class="eyebrow">How I Work</div>
+      <h2 class="section-title">Broken stack to<br /><em>running system</em></h2>
+    </div>
+    <div class="process-grid reveal">
+      {processSteps.map((p) => (
+        <div class="process-step">
+          <span class="ps-num">{p.num}</span>
+          <div class="ps-title">{p.title}</div>
+          <p class="ps-desc">{p.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="full-divider"><hr /></div>
+
+  <section class="section" id="about">
+    <div class="section-header reveal">
+      <div class="eyebrow">Background</div>
+      <h2 class="section-title">Built under<br /><em>real constraints</em></h2>
+    </div>
+    <div class="about-card reveal about-photo-card" style="margin-bottom:1.1rem">
+      <img src="/images/enoch-photo.jpg" alt="Enoch Okumagbe" class="about-photo" width="560" height="560" />
+      <div class="about-photo-text">
+        <div class="ac-title">Enoch Okumagbe</div>
+        <div class="ac-role">Lagos, Nigeria · Remote Worldwide</div>
+        <p class="ac-body" style="margin-top:.4rem">The person building every system on this page — not an agency, not a team. Direct line to whoever ends up doing the work.</p>
+      </div>
+    </div>
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <div class="ac-title">Co-Founder — Otaku AI</div>
+        <div class="ac-role">Solana Superteam Nigeria</div>
+        <p class="ac-body">Grew a zero-budget Twitter presence to 1,500 followers in 3 months organically. Secured a partnership with Drift Protocol. Featured in the Hashed Emergent Web3 2024 Nigeria Landscape report. Topped Superteam Nigeria Weekly Product Highlights.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="ac-title">Partnership Marketer</div>
+        <div class="ac-role">Penmob Creative Studios</div>
+        <p class="ac-body">Negotiated and closed Web3 ecosystem partnership deals. The same deal-making instinct that closes partnerships is what drives outcome-first automation work.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="ac-title">Physics Education</div>
+        <div class="ac-role">University of Benin</div>
+        <p class="ac-body">Systems thinking isn't a buzzword — it's how physics is taught. How components interact, where failure modes live, how to design for predictable outcomes.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="ac-title">Certifications</div>
+        <div class="ac-role">Verified · Active</div>
+        <ul class="cert-list">
+          <li>Software Testing Foundations: Test Techniques</li>
+          <li>Understanding Manual Testing</li>
+          <li>Make Foundation</li>
+          <li>HubSpot Marketing Hub (in progress)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-section">
+    <div class="cta-box reveal">
+      <div class="cta-left">
+        <h2 class="cta-title">Stop doing it<br />manually.<br /><em>Full stop.</em></h2>
+      </div>
+      <div class="cta-right">
+        <p class="cta-desc">Every hour you spend manually following up, auditing your CRM, or crafting individual outreach emails is an hour your pipeline isn't scaling. Let's fix the root cause.</p>
+        <a href="https://www.upwork.com/freelancers/~01a9a956bec4468c5d" target="_blank" class="btn-cta-solid">Hire Me on Upwork</a>
+        <a href="#contact" class="btn-cta-outline">Send a Message</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-section" id="contact">
+    <div class="eyebrow reveal">Contact</div>
+    <h2 class="contact-title reveal">Let's talk</h2>
+    <p class="contact-sub reveal">Describe your stack and where it breaks. I'll respond within 24 hours.</p>
+    <form id="contactForm" class="reveal">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" name="first_name" placeholder="Alex" required />
+        </div>
+        <div class="form-field">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" name="last_name" placeholder="Morgan" required />
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@company.com" required />
+      </div>
+      <div class="form-field">
+        <label for="message">What are you trying to automate?</label>
+        <textarea id="message" name="message" rows="4" placeholder="Describe your current setup and where things break down..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send Message</button>
+      <p class="form-note">Or email directly: <a href="mailto:okumagbeenoch4@gmail.com">okumagbeenoch4@gmail.com</a></p>
+    </form>
+    <div class="contact-links">
+      <a href="mailto:okumagbeenoch4@gmail.com">Email</a>
+      <a href="https://linkedin.com/in/enoch-okumagbe-4442b6252" target="_blank">LinkedIn</a>
+      <a href="https://www.upwork.com/freelancers/~01a9a956bec4468c5d" target="_blank">Upwork</a>
+    </div>
+  </div>
+</BaseLayout>

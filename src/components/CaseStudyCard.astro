@@ -1,0 +1,28 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  industry: string;
+  problem: string;
+  outcome: string;
+  stack: string[];
+  featured?: boolean;
+  tinted?: boolean;
+}
+const { slug, title, industry, problem, outcome, stack, featured = false, tinted = false } = Astro.props;
+---
+
+<a
+  href={`/work/${slug}`}
+  class={`proj-card case-card reveal${tinted ? ' tinted' : ''}`}
+  data-featured={featured ? 'true' : 'false'}
+  style="text-decoration:none;color:inherit;cursor:pointer"
+>
+  <div class="proj-eyebrow">{industry}</div>
+  <div class="proj-title">{title}</div>
+  <p class="proj-problem">{problem}</p>
+  <div class="proj-outcome">{outcome}</div>
+  <div class="proj-stack">
+    {stack.map((tag) => <span class="stack-tag">{tag}</span>)}
+  </div>
+</a>
